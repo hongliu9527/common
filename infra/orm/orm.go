@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 16:59:20
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-23 10:08:27
+ * @LastEditTime: 2022-10-09 19:20:30
  * @FilePath: \common\infra\orm\orm.go
  * @Description:Orm基础设施实现
  *
@@ -17,7 +17,7 @@ import (
 	"hongliu9527/common/infra/common"
 	"hongliu9527/common/infra/orm/config"
 
-	"gorm.io/gorm"
+	"github.com/jmoiron/sqlx"
 )
 
 // 编译期保证接口实现的一致性
@@ -28,11 +28,11 @@ type ormInfra struct {
 	base.BaseInfra                                     // 基础设施基类
 	config            *config.OrmInfraConfig           // 数据库配置信息
 	nameConfig        map[string]config.DataBaseConfig // 数据库实例名-配置信息哈希表
-	tableNameInstance map[string]*gorm.DB              // 数据库表名-数据库实例哈希表
-	nameInstance      map[string]*gorm.DB              // 数据库实例名-数据库实例哈希表
-	lastError         error                            // 实例的最新错误信息
-	ctx               context.Context                  // 上下文对象
-	cancel            context.CancelFunc               // 取消回调函数
+	tableNameInstance map[string]*sqlx.DB              // 数据库表名-数据库实例哈希表
+	nameInstance      map[string]*sqlx.DB              // 数据库实例名-数据库实例哈希表
+
+	ctx    context.Context    // 上下文对象
+	cancel context.CancelFunc // 取消回调函数
 }
 
 // orm基础设施单例
@@ -43,8 +43,8 @@ func New(ormConfig *config.OrmInfraConfig) common.OrmInfra {
 
 	singleton.config = ormConfig
 	singleton.nameConfig = make(map[string]config.DataBaseConfig)
-	singleton.tableNameInstance = make(map[string]*gorm.DB)
-	singleton.nameInstance = make(map[string]*gorm.DB)
+	singleton.tableNameInstance = make(map[string]*sqlx.DB)
+	singleton.nameInstance = make(map[string]*sqlx.DB)
 
 	// 构建基础设施基类
 	singleton.BaseInfra = base.NewBaseInfra(singleton.Name(), ormConfig, singleton.start, singleton.stop)

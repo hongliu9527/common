@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 15:21:26
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-24 16:30:27
+ * @LastEditTime: 2022-10-09 19:48:33
  * @FilePath: \common\infra\orm\infra_implemention.go
  * @Description: orm基础设施接口实现
  *
@@ -18,10 +18,8 @@ import (
 
 	ormConfig "hongliu9527/common/infra/orm/config"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
-	"github.com/sirupsen/logrus"
-	"gorm.io/driver/clickhouse"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 )
@@ -47,15 +45,15 @@ func (i *ormInfra) start(ctx context.Context) error {
 // init 初始化orm基础设施
 func (i *ormInfra) init() error {
 	// 初始化所有gorm句柄
-	for _, gormConfig := range i.config.Configs {
+	for _, sqlxConfig := range i.config.Configs {
 		// 初始化gorm句柄
-		db, err := connectOneGorm(i.config.LogLevel, i.config.UseExternalHost, gormConfig)
+		db, err := connectOneSqlx(i.config.LogLevel, i.config.UseExternalHost, sqlxConfig)
 		if err != nil {
 			return err
 		}
 
 		// 查询该句柄下iot平台相关表名，并添加表名-句柄哈希表
-		tableList, err := queryTableNames(db, gormConfig.Type, gormConfig.DatabaseName, gormConfig.TablePrefix)
+		tableList, err := queryTableNames(db, sqlxConfig.Type, sqlxConfig.DatabaseName, sqlxConfig.TablePrefix)
 		if err != nil {
 			return err
 		}
@@ -64,17 +62,17 @@ func (i *ormInfra) init() error {
 		}
 
 		// 添加实例名-配置信息哈希表
-		i.nameConfig[gormConfig.Name] = gormConfig
+		i.nameConfig[sqlxConfig.Name] = sqlxConfig
 
 		// 添加数据库实例名-数据库实例哈希表
-		i.nameInstance[gormConfig.Name] = db
+		i.nameInstance[sqlxConfig.Name] = db
 	}
 
 	return nil
 }
 
-// connectOneGorm 初始化1个gorm连接
-func connectOneGorm(level string, useExternalHost bool, config ormConfig.DataBaseConfig) (*gorm.DB, error) {
+// connectOneSqlx 初始化1个sqlx连接
+func connectOneSqlx(level string, useExternalHost bool, config ormConfig.DataBaseConfig) (*sqlx.DB, error) {
 	var err error
 
 	// 判断是否使用外网地址
@@ -83,33 +81,11 @@ func connectOneGorm(level string, useExternalHost bool, config ormConfig.DataBas
 		hostPort = config.HostPort
 	}
 
-	// 转化日志等级参数为gormLogger日志等级
-	var logLevel logrus.Level
-	switch level {
-	case "info":
-		logLevel = logrus.InfoLevel
-	case "warning", "warn":
-		logLevel = logrus.WarnLevel
-	case "error":
-		logLevel = logrus.ErrorLevel
-	default:
-		logLevel = logrus.DebugLevel
-	}
-
-	// 新建Gorm日志
-	newLogger := NewLogger(LogConfig{
-		Name:               config.Name,       // 服务名称
-		AccessPath:         "./logs/orm/",     // 访问日志目录(相对二进制执行文件的路径)
-		AccessLogSplitPace: 24,                // 日志文件分割时间（单位：小时）
-		AccessLogMaxAge:    24 * 30,           // 日志文件的最长保存时间（单位：小时）
-		ConsoleLevel:       logLevel,          // 终端日志等级
-		FileLevel:          logrus.TraceLevel, // 文件日志等级
-	})
-
 	// 生成数据源名称
 	var (
-		dsn       string
-		dialector gorm.Dialector
+		dsn string
+		db  *sqlx.DB
+		err error
 	)
 	switch config.Type {
 	case "mysql", "tidb":
@@ -121,31 +97,15 @@ func connectOneGorm(level string, useExternalHost bool, config ormConfig.DataBas
 			"charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai",
 			config.ConnectTimeout)
 
-		dialector = mysql.New(mysql.Config{
-			DSN:                       dsn,   // DSN配置信息
-			DefaultStringSize:         256,   // string类型字段的默认长度
-			DisableDatetimePrecision:  true,  // 禁用datetime精度，因为MySQL5.6之前的数据库不支持
-			DontSupportRenameIndex:    true,  // 重命名索引时采用删除并创建的方式，因为MySQL5.7之前的数据库和MariaDB不支持重命名索引
-			DontSupportRenameColumn:   true,  // 用`change`重命名列，因为MySQL8之前的数据库和MariaDB不支持重命名列
-			SkipInitializeWithVersion: false, // 根据当前MySQL版本自动配置
-		})
-
 	case "clickhouse":
 		dsn = fmt.Sprintf("tcp://%s?database=%s&username=%s&password=%s&read_timeout=10&write_timeout=20",
 			hostPort,
 			config.DatabaseName,
 			config.Username,
 			config.Password)
-
-		dialector = clickhouse.New(clickhouse.Config{
-			DSN:                       dsn,   // DSN配置信息
-			DisableDatetimePrecision:  true,  // 禁用datetime精度
-			DontSupportRenameColumn:   true,  // 用`change`重命名列
-			SkipInitializeWithVersion: false, // 根据当前版本自动配置
-		})
 	}
 
-	if dsn == "" || dialector == nil {
+	if dsn == "" {
 		return nil, errors.New("数据库基础配置信息缺少")
 	}
 
