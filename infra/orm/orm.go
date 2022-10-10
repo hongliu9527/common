@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 16:59:20
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-09 19:20:30
+ * @LastEditTime: 2022-10-10 11:51:42
  * @FilePath: \common\infra\orm\orm.go
  * @Description:Orm基础设施实现
  *
@@ -23,13 +23,14 @@ import (
 // 编译期保证接口实现的一致性
 var _ common.OrmInfra = (*ormInfra)(nil)
 
-// ormInfra Gorm基础设施定义类型定义
+// ormInfra orm基础设施定义类型定义
 type ormInfra struct {
 	base.BaseInfra                                     // 基础设施基类
 	config            *config.OrmInfraConfig           // 数据库配置信息
 	nameConfig        map[string]config.DataBaseConfig // 数据库实例名-配置信息哈希表
 	tableNameInstance map[string]*sqlx.DB              // 数据库表名-数据库实例哈希表
 	nameInstance      map[string]*sqlx.DB              // 数据库实例名-数据库实例哈希表
+	lastError         error                            // 实例的最新错误信息
 
 	ctx    context.Context    // 上下文对象
 	cancel context.CancelFunc // 取消回调函数
