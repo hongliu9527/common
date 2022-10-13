@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-16 14:57:22
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-23 15:18:00
+ * @LastEditTime: 2022-10-13 14:05:46
  * @FilePath: \common\utils\common.go
  * @Description: 定义一些全局公用的方法和类型
  *
@@ -55,6 +55,12 @@ func CreatFilePath(path string) error {
 func IsStructPointer(value interface{}) bool {
 	reflectType := reflect.TypeOf(value)
 	return reflectType.Kind() == reflect.Ptr && reflectType.Elem().Kind() == reflect.Struct
+}
+
+// IsSlicePointer 判断是否为切片指针
+func IsSlicePointer(value interface{}) bool {
+	reflectType := reflect.TypeOf(value)
+	return reflectType.Kind() == reflect.Ptr && reflectType.Elem().Kind() == reflect.Slice
 }
 
 // IsMap 判断是否为map

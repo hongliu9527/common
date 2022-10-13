@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 10:13:07
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-10 11:53:44
+ * @LastEditTime: 2022-10-13 15:11:31
  * @FilePath: \common\infra\orm\orm_implemention.go
  * @Description:orm接口实现
  *
@@ -15,99 +15,8 @@ import (
 	"hongliu9527/common/infra/common"
 )
 
-// Model 查询模型方法
-func (i *ormInfra) Model(value interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Select 设置查询字段方法
-func (i *ormInfra) Select(query interface{}, args ...interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Update 设置更新单个字段的方法
-func (i *ormInfra) Update(column string, value interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Updates 设置更新多个字段的方法
-func (i *ormInfra) Updates(value interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Delete 删除方法
-func (i *ormInfra) Delete(value interface{}, conds ...interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Create 创建方法
-func (i *ormInfra) Create(value interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// CreateInBatches 批量创建方法
-func (i *ormInfra) CreateInBatches(value interface{}, batchSize int) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Group 分组方法
-func (i *ormInfra) Group(name string) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Where 条件方法
-func (i *ormInfra) Where(query interface{}, args ...interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Find 查询方法
-func (i *ormInfra) Find(value interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Scan 查询方法(无需绑定表名)
-func (i *ormInfra) Scan(value interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Count 统计个数方法
-func (i *ormInfra) Count(count *int64) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Debug 执行调试信息
-func (i *ormInfra) Debug() common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Table 执行设置表名方法
-func (i *ormInfra) Table(name string, args ...interface{}) common.Orm {
+// Conn 获取数据库查询句柄
+func (i *ormInfra) Conn(name string) common.Orm {
 	// 根据表明查询实例
 	db, ok := i.tableNameInstance[name]
 	if !ok {
@@ -116,108 +25,76 @@ func (i *ormInfra) Table(name string, args ...interface{}) common.Orm {
 	}
 
 	// 创建新的查询会话
-	return &session{
-		tx: db.WithContext(i.ctx).Table(name, args...),
+	return &dbConnection{
+		db:          db,
+		tx:          nil,
+		serviceName: i.InfraName,
+		tableName:   name,
+		lastError:   nil,
 	}
 }
 
-// DB 按名称指定DB实例
-func (i *ormInfra) DB(name string) common.Orm {
-	db, ok := i.nameInstance[name]
-	if !ok {
-		i.lastError = fmt.Errorf("根据数据库名(%s)无法找到对应的Gorm实例", name)
-		return i
-	}
-	return &session{
-		tx: db.WithContext(i.ctx),
-	}
-}
-
-// Limit 执行设置查询记录条数方法
-func (i *ormInfra) Limit(limit int) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Offset 执行设置跳过多少条记录开始查询的方法
-func (i *ormInfra) Offset(offset int) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Order 执行设置查询结果排序方法
-func (i *ormInfra) Order(value interface{}) common.Orm {
-	i.mustStartWithConn()
-
-	return i
-}
-
-// Error 查询最新的Orm执行错误信息
-func (i *ormInfra) Error() error {
+// Get 查询单个数据
+func (i *ormInfra) Get(dest interface{}, query string, args ...interface{}) error {
 	i.mustStartWithConn()
 	return i.lastError
 }
 
-// Distinct 执行结果集去重
-func (i *ormInfra) Distinct(args ...interface{}) common.Orm {
+// Select 查询多个数据
+func (i *ormInfra) Select(dest interface{}, query string, args ...interface{}) error {
 	i.mustStartWithConn()
-
-	return i
+	return i.lastError
 }
 
-// Pluck 执行查询单列
-func (i *ormInfra) Pluck(column string, dest interface{}) common.Orm {
+// Insert 创建单个数据
+func (i *ormInfra) Insert(data interface{}) (uint64, error) {
 	i.mustStartWithConn()
-
-	return i
+	return 0, i.lastError
 }
 
-// Save 执行更新全部字段
-func (i *ormInfra) Save(value interface{}) common.Orm {
+// BatchInsert 批量插入
+func (i *ormInfra) BatchInsert(datas []interface{}) error {
 	i.mustStartWithConn()
-
-	return i
+	return i.lastError
 }
 
-// Raw 原生sql查询方法
-func (i *ormInfra) Raw(sql string, values ...interface{}) common.Orm {
+// Update 更新数据
+func (i *ormInfra) Update(query string, arg map[string]interface{}) error {
 	i.mustStartWithConn()
-
-	return i
+	return i.lastError
 }
 
-// Filter 执行多字段筛选
-func (i *ormInfra) Filter(params []common.FilterParam) common.Orm {
+// Exec 执行原生sql
+func (i *ormInfra) Exec(qeury string, args ...interface{}) error {
 	i.mustStartWithConn()
-
-	return i
+	return i.lastError
 }
 
-// Sort 执行多字段排序
-func (i *ormInfra) Sort(params []common.SortParm) common.Orm {
+// Delete 删除数据
+func (i *ormInfra) Delete(qeury string, args ...interface{}) error {
 	i.mustStartWithConn()
-
-	return i
+	return i.lastError
 }
 
-// Joins 执行联合查询
-func (i *ormInfra) Joins(query string, args ...interface{}) common.Orm {
+// Begin 开启事务
+func (i *ormInfra) Begin() (common.Orm, error) {
 	i.mustStartWithConn()
-
-	return i
+	return nil, i.lastError
 }
 
-// Exec 执行原生语句方法
-func (i *ormInfra) Exec(sql string, values ...interface{}) common.Orm {
+// RollBack 事务回滚
+func (i *ormInfra) RollBack() {
 	i.mustStartWithConn()
+}
 
-	return i
+// Commit 执行事务
+func (i *ormInfra) Commit() error {
+	i.mustStartWithConn()
+	return i.lastError
 }
 
 func (i *ormInfra) mustStartWithConn() {
 	if i.lastError == nil {
-		i.lastError = fmt.Errorf("数据库查询会话未创建，请检查Orm是否已经最先调用Conn方法")
+		i.lastError = fmt.Errorf("数据库查询连接未创建，请检查Orm是否已经最先调用Conn方法")
 	}
 }
