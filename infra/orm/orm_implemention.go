@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 10:13:07
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-13 15:11:31
+ * @LastEditTime: 2022-10-14 17:02:47
  * @FilePath: \common\infra\orm\orm_implemention.go
  * @Description:orm接口实现
  *
@@ -16,12 +16,12 @@ import (
 )
 
 // Conn 获取数据库查询句柄
-func (i *ormInfra) Conn(name string) common.Orm {
+func (i *ormInfra) Conn(tableName string) (common.Orm, error) {
 	// 根据表明查询实例
-	db, ok := i.tableNameInstance[name]
+	db, ok := i.tableNameInstance[tableName]
 	if !ok {
-		i.lastError = fmt.Errorf("根据表名(%s)无法找到对应的Gorm实例", name)
-		return i
+		i.lastError = fmt.Errorf("根据表名(%s)无法找到对应的Gorm实例", tableName)
+		return nil, i.lastError
 	}
 
 	// 创建新的查询会话
@@ -29,9 +29,9 @@ func (i *ormInfra) Conn(name string) common.Orm {
 		db:          db,
 		tx:          nil,
 		serviceName: i.InfraName,
-		tableName:   name,
+		tableName:   tableName,
 		lastError:   nil,
-	}
+	}, nil
 }
 
 // Get 查询单个数据
@@ -47,19 +47,19 @@ func (i *ormInfra) Select(dest interface{}, query string, args ...interface{}) e
 }
 
 // Insert 创建单个数据
-func (i *ormInfra) Insert(data interface{}) (uint64, error) {
+func (i *ormInfra) Insert(value interface{}) (uint64, error) {
 	i.mustStartWithConn()
 	return 0, i.lastError
 }
 
 // BatchInsert 批量插入
-func (i *ormInfra) BatchInsert(datas []interface{}) error {
+func (i *ormInfra) BatchInsert(values interface{}) error {
 	i.mustStartWithConn()
 	return i.lastError
 }
 
 // Update 更新数据
-func (i *ormInfra) Update(query string, arg map[string]interface{}) error {
+func (i *ormInfra) Update(condition string, arg map[string]interface{}) error {
 	i.mustStartWithConn()
 	return i.lastError
 }
@@ -71,20 +71,21 @@ func (i *ormInfra) Exec(qeury string, args ...interface{}) error {
 }
 
 // Delete 删除数据
-func (i *ormInfra) Delete(qeury string, args ...interface{}) error {
+func (i *ormInfra) Delete(condition string, args ...interface{}) error {
 	i.mustStartWithConn()
 	return i.lastError
 }
 
 // Begin 开启事务
-func (i *ormInfra) Begin() (common.Orm, error) {
+func (i *ormInfra) Begin() error {
 	i.mustStartWithConn()
-	return nil, i.lastError
+	return i.lastError
 }
 
-// RollBack 事务回滚
-func (i *ormInfra) RollBack() {
+// Rollback 事务回滚
+func (i *ormInfra) Rollback() error {
 	i.mustStartWithConn()
+	return i.lastError
 }
 
 // Commit 执行事务

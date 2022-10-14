@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 15:21:26
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-10 14:35:50
+ * @LastEditTime: 2022-10-14 17:05:39
  * @FilePath: \common\infra\orm\infra_implemention.go
  * @Description: orm基础设施接口实现
  *
@@ -133,16 +133,16 @@ func queryTableNames(db *sqlx.DB, dataBaseType string, dataBaseName string, tabl
 	var querySQL string
 	switch dataBaseType {
 	case "mysql", "tidb":
-		querySQL = "select table_name as tableName from information_schema.tables where table_schema = ? and table_name like ?"
+		querySQL = "select table_name from information_schema.tables where table_schema = ? and table_name like ?"
 	case "clickhouse":
-		querySQL = "select DISTINCT(name) as tableName from system.tables where database = ? and name like ?"
+		querySQL = "select DISTINCT(name) from system.tables where database = ? and name like ?"
 	default:
 		return nil, fmt.Errorf("数据库类型未知(%s)", dataBaseType)
 	}
 
-	rows, err := db.Raw(querySQL, dataBaseName, tabelPrefix)
+	rows, err := db.Query(querySQL, dataBaseName, tabelPrefix)
 	if err != nil {
-		return nil, fmt.Errorf("查询数据库(%s)的表名列表失败(%s)", dataBaseName, db.Error)
+		return nil, fmt.Errorf("查询数据库(%s)的表名列表失败(%s)", dataBaseName, err)
 	}
 	for rows.Next() {
 		var tableName string
