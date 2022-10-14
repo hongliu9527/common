@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 10:15:54
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-14 17:06:48
+ * @LastEditTime: 2022-10-14 17:11:05
  * @FilePath: \common\infra\orm\db_connection.go
  * @Description: Orm实例封装
  *
@@ -58,7 +58,7 @@ func (c *dbConnection) Get(dest interface{}, query string, args ...interface{}) 
 // Select 查询多个数据
 func (c *dbConnection) Select(dest interface{}, query string, args ...interface{}) error {
 	// 传入的参数必须是切片的指针类型
-	if utils.IsSlicePointer(dest) == false {
+	if !utils.IsSlicePointer(dest) {
 		return errors.New("传入的参数必须是切片指针")
 	}
 
@@ -169,7 +169,7 @@ func (c *dbConnection) Update(condition string, updateValue map[string]interface
 	// 组装更新函数
 	fields := make([]string, 0, len(updateValue))
 	for field, _ := range updateValue {
-		fields = append(fields, fmt.Sprint("%s=:%s", field))
+		fields = append(fields, fmt.Sprintf("%s:=%s", field, field))
 	}
 
 	query := fmt.Sprintf("UPDATE %s SET %s WHERE %s", c.tableName, strings.Join(fields, ","), condition)
@@ -193,7 +193,7 @@ func (c *dbConnection) Delete(condition string, args ...interface{}) error {
 	query := fmt.Sprintf("DELETE %s WHERE %s", c.tableName, condition)
 	inSql, inArgs, err := sqlx.In(query, args...)
 	if err != nil {
-		fmt.Errorf("sql语句或者参数列表错误(%s)", err.Error())
+		return fmt.Errorf("sql语句或者参数列表错误(%s)", err.Error())
 	}
 
 	// 如果事务存在则使用事务实例
@@ -212,7 +212,7 @@ func (c *dbConnection) Delete(condition string, args ...interface{}) error {
 func (c *dbConnection) Exec(query string, args ...interface{}) error {
 	inSql, inArgs, err := sqlx.In(query, args...)
 	if err != nil {
-		fmt.Errorf("sql语句或者参数列表错误(%s)", err.Error())
+		return fmt.Errorf("sql语句或者参数列表错误(%s)", err.Error())
 	}
 
 	// 如果事务实例存在则使用事务实例
