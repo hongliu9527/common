@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 10:15:54
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-14 17:11:05
+ * @LastEditTime: 2022-10-17 11:06:29
  * @FilePath: \common\infra\orm\db_connection.go
  * @Description: Orm实例封装
  *
@@ -245,7 +245,7 @@ func (c *dbConnection) Begin() error {
 // Rollback 回滚事务
 func (c *dbConnection) Rollback() error {
 	if c.tx == nil {
-		return errors.New("事务句柄不存在")
+		return errors.New("事务实例不存在")
 	}
 
 	c.tx.Rollback()
@@ -256,7 +256,7 @@ func (c *dbConnection) Rollback() error {
 // Commit 执行事务
 func (c *dbConnection) Commit() error {
 	if c.tx == nil {
-		return errors.New("事务句柄不存在")
+		return errors.New("事务实例不存在")
 	}
 
 	err := c.tx.Commit()

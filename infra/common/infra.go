@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 15:46:30
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-23 15:50:50
+ * @LastEditTime: 2022-10-17 15:14:21
  * @FilePath: \common\infra\common\infra.go
  * @Description:基础设施接口定义
  *
@@ -23,5 +23,11 @@ type Infra interface {
 // OrmInfra orm基础设施接口定义
 type OrmInfra interface {
 	Orm
+	Infra
+}
+
+// OssInfra oss基础设施接口定义
+type OssInfra interface {
+	Oss
 	Infra
 }

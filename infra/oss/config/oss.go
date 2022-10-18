@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-24 16:26:04
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-27 15:12:07
+ * @LastEditTime: 2022-10-17 15:03:43
  * @FilePath: \common\infra\oss\config\oss.go
  * @Description: oss 配置信息
  *
@@ -67,13 +67,13 @@ type OssInfraConfig struct {
 	Compress      bool             `mapstructure:"compress" default:"true"`        // 上传文件是否压缩
 	RetryCount    int              `mapstructure:"retryCount" default:"3"`         // 上传失败重试次数
 	// Oss访问地址和密钥相关配置
-	AccessKeyID          string                         `mapstructure:"accessKeyID" default:"ID"`             // 数据访问KEY标识
-	AccessKeySecret      string                         `mapstructure:"accessKeySecret" default:"keySecret"`  // 数据访问密钥
-	Endpoint             string                         `mapstructure:"endpoint" default:"127.0.0.1"`         // 数据挂载点名称
-	Bucket               string                         `mapstructure:"bucket" default:"bucket-02"`           // 数据仓库名称
-	RoleARN              string                         `mapstructure:"roleARN" default:"testRole"`           // 临时角色访问ARN
-	SignatureExpiresTime string                         `mapstructure:"signatureExpiresTime" default:"10800"` // 签名过期时间
-	base.BaseConfig      `mapstructure:"omit" yaml:"-"` // 基础配置信息
+	AccessKeyID          string                `mapstructure:"accessKeyID" default:"ID"`             // 数据访问KEY标识
+	AccessKeySecret      string                `mapstructure:"accessKeySecret" default:"keySecret"`  // 数据访问密钥
+	Endpoint             string                `mapstructure:"endpoint" default:"127.0.0.1"`         // 数据挂载点名称
+	Bucket               string                `mapstructure:"bucket" default:"bucket-02"`           // 数据仓库名称
+	RoleARN              string                `mapstructure:"roleARN" default:"testRole"`           // 临时角色访问ARN
+	SignatureExpiresTime string                `mapstructure:"signatureExpiresTime" default:"10800"` // 签名过期时间
+	base.BaseConfig      `mapstructure:"omit"` // 基础配置信息
 }
 
 // New 创建Oss基础设施配置
