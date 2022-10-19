@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 10:13:07
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-14 17:02:47
+ * @LastEditTime: 2022-10-19 11:38:44
  * @FilePath: \common\infra\orm\orm_implemention.go
  * @Description:orm接口实现
  *
@@ -20,7 +20,7 @@ func (i *ormInfra) Conn(tableName string) (common.Orm, error) {
 	// 根据表明查询实例
 	db, ok := i.tableNameInstance[tableName]
 	if !ok {
-		i.lastError = fmt.Errorf("根据表名(%s)无法找到对应的Gorm实例", tableName)
+		i.lastError = fmt.Errorf("根据表名(%s)无法找到对应的orm实例", tableName)
 		return nil, i.lastError
 	}
 
