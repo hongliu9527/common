@@ -1,4 +1,4 @@
-module hongliu9527/common
+module github.com/hongliu9527/common
 
 go 1.19
 
