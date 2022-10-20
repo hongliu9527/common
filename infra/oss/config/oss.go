@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-24 16:26:04
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-17 15:03:43
+ * @LastEditTime: 2022-10-20 14:48:59
  * @FilePath: \common\infra\oss\config\oss.go
  * @Description: oss 配置信息
  *
@@ -16,8 +16,8 @@ import (
 	"sync"
 	"time"
 
-	"hongliu9527/common/infra/base"
-	"hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/base"
+	"github.com/hongliu9527/common/infra/common"
 
 	"github.com/hongliu9527/go-tools/uuid"
 	"github.com/pkg/errors"

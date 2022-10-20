@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-10-18 16:20:51
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-18 16:45:12
+ * @LastEditTime: 2022-10-20 14:53:47
  * @FilePath: \common\infra\redis\redis.go
  * @Description:Redis基础设施定义
  *
@@ -14,9 +14,9 @@ package redis_infra
 import (
 	"context"
 
-	"hongliu9527/common/infra/base"
-	"hongliu9527/common/infra/common"
-	"hongliu9527/common/infra/redis/config"
+	"github.com/hongliu9527/common/infra/base"
+	"github.com/hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/redis/config"
 
 	"github.com/go-redis/redis/v8"
 )

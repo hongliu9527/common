@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 10:15:54
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-17 11:06:29
+ * @LastEditTime: 2022-10-20 14:54:01
  * @FilePath: \common\infra\orm\db_connection.go
  * @Description: Orm实例封装
  *
@@ -18,8 +18,8 @@ import (
 	"strings"
 	"time"
 
-	"hongliu9527/common/infra/common"
-	"hongliu9527/common/utils"
+	"github.com/hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/utils"
 
 	"github.com/jmoiron/sqlx"
 )

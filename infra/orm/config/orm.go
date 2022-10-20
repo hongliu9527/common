@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 16:01:47
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-21 16:06:28
+ * @LastEditTime: 2022-10-20 14:52:54
  * @FilePath: \common\infra\orm\config\orm.go
  * @Description:Orm基础设施配置格式定义
  *
@@ -17,8 +17,8 @@ import (
 	"sync"
 	"time"
 
-	"hongliu9527/common/infra/base"
-	"hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/base"
+	"github.com/hongliu9527/common/infra/common"
 
 	"github.com/pkg/errors"
 )

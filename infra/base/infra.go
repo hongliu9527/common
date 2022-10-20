@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 15:26:52
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-23 16:12:05
+ * @LastEditTime: 2022-10-20 14:53:26
  * @FilePath: \common\infra\base\infra.go
  * @Description: 基础设施基类实现
  *
@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"time"
 
-	"hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/common"
 
 	"github.com/hongliu9527/go-tools/logger"
 )

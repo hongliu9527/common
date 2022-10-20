@@ -15,9 +15,9 @@ import (
 	"context"
 	"sync"
 
-	"hongliu9527/common/infra/common"
-	"hongliu9527/common/infra/config_source/apollo"
-	"hongliu9527/common/infra/config_source/local"
+	"github.com/hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/config_source/apollo"
+	"github.com/hongliu9527/common/infra/config_source/local"
 
 	"github.com/hongliu9527/go-tools/logger"
 )

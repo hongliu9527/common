@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 10:30:45
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-21 10:31:04
+ * @LastEditTime: 2022-10-20 14:52:46
  * @FilePath: \common\infra\config_source\apollo\apollo.go
  * @Description: Apollo配置数据源定义
  *
@@ -14,9 +14,10 @@ package apollo
 import (
 	"context"
 	"fmt"
-	"hongliu9527/common/infra/common"
 	"os"
 	"time"
+
+	"github.com/hongliu9527/common/infra/common"
 
 	"github.com/hongliu9527/go-tools/logger"
 	"github.com/shima-park/agollo"

@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-10-17 17:30:01
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-18 15:46:58
+ * @LastEditTime: 2022-10-20 14:54:12
  * @FilePath: \common\infra\oss\local\oss_implemention.go
  * @Description:oss接口实现
  *
@@ -20,7 +20,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"hongliu9527/common/utils"
+	"github.com/hongliu9527/common/utils"
 
 	"github.com/hongliu9527/go-tools/logger"
 )

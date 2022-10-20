@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 16:59:20
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-10 11:51:42
+ * @LastEditTime: 2022-10-20 14:54:17
  * @FilePath: \common\infra\orm\orm.go
  * @Description:Orm基础设施实现
  *
@@ -13,9 +13,9 @@ package orm
 import (
 	"context"
 
-	"hongliu9527/common/infra/base"
-	"hongliu9527/common/infra/common"
-	"hongliu9527/common/infra/orm/config"
+	"github.com/hongliu9527/common/infra/base"
+	"github.com/hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/orm/config"
 
 	"github.com/jmoiron/sqlx"
 )

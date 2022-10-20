@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-16 10:22:29
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-23 09:16:27
+ * @LastEditTime: 2022-10-20 14:53:20
  * @FilePath: \common\infra\base\config.go
  * @Description: 基础配置
  *
@@ -15,7 +15,7 @@ import (
 	"context"
 	"time"
 
-	"hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/common"
 
 	"github.com/hongliu9527/go-tools/logger"
 )

@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 15:21:26
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-17 10:28:09
+ * @LastEditTime: 2022-10-20 14:54:28
  * @FilePath: \common\infra\orm\infra_implemention.go
  * @Description: orm基础设施接口实现
  *
@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"time"
 
-	ormConfig "hongliu9527/common/infra/orm/config"
+	ormConfig "github.com/hongliu9527/common/infra/orm/config"
 
 	_ "github.com/ClickHouse/clickhouse-go"
 	_ "github.com/go-sql-driver/mysql"

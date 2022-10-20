@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-10-17 11:07:18
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-17 15:14:25
+ * @LastEditTime: 2022-10-20 14:53:29
  * @FilePath: \common\infra\oss\aliyun\aliyun.go
  * @Description: 阿里云oss实现
  *
@@ -12,9 +12,9 @@
 package aliyun
 
 import (
-	"hongliu9527/common/infra/base"
-	"hongliu9527/common/infra/common"
-	"hongliu9527/common/infra/oss/config"
+	"github.com/hongliu9527/common/infra/base"
+	"github.com/hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/oss/config"
 
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 )

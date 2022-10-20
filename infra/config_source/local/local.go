@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 10:37:45
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-21 11:35:56
+ * @LastEditTime: 2022-10-20 14:52:44
  * @FilePath: \common\infra\config_source\local\local.go
  * @Description:Local配置数据源定义
  *
@@ -17,7 +17,7 @@ import (
 	"os"
 	"time"
 
-	"hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/common"
 
 	"github.com/hongliu9527/go-tools/logger"
 	"github.com/spf13/viper"

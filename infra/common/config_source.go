@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-16 14:17:23
  * @LastEditors: hongliu
- * @LastEditTime: 2022-09-20 16:34:46
+ * @LastEditTime: 2022-10-20 14:47:08
  * @FilePath: \common\infra\common\config_source.go
  * @Description: 配置数据源接口抽象定义
  *
@@ -19,7 +19,7 @@ import (
 	"strings"
 	"time"
 
-	"hongliu9527/common/utils"
+	"github.com/hongliu9527/common/utils"
 
 	"github.com/hongliu9527/go-tools/logger"
 )

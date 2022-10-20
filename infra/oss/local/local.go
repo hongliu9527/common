@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-10-17 15:54:33
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-18 15:43:05
+ * @LastEditTime: 2022-10-20 14:53:37
  * @FilePath: \common\infra\oss\local\local.go
  * @Description:本地存储oss实现
  *
@@ -12,9 +12,9 @@
 package local
 
 import (
-	"hongliu9527/common/infra/base"
-	"hongliu9527/common/infra/common"
-	"hongliu9527/common/infra/oss/config"
+	"github.com/hongliu9527/common/infra/base"
+	"github.com/hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/oss/config"
 )
 
 // 本地文件oss单例

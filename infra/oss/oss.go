@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-24 16:25:22
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-18 16:46:44
+ * @LastEditTime: 2022-10-20 14:49:24
  * @FilePath: \common\infra\oss\oss.go
  * @Description: oss 构造器
  *
@@ -11,10 +11,10 @@
 package oss
 
 import (
-	"hongliu9527/common/infra/common"
-	"hongliu9527/common/infra/oss/aliyun"
-	"hongliu9527/common/infra/oss/config"
-	"hongliu9527/common/infra/oss/local"
+	"github.com/hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/oss/aliyun"
+	"github.com/hongliu9527/common/infra/oss/config"
+	"github.com/hongliu9527/common/infra/oss/local"
 
 	"github.com/hongliu9527/go-tools/logger"
 )

@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-23 10:13:07
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-19 11:38:44
+ * @LastEditTime: 2022-10-20 14:53:55
  * @FilePath: \common\infra\orm\orm_implemention.go
  * @Description:orm接口实现
  *
@@ -12,7 +12,8 @@ package orm
 
 import (
 	"fmt"
-	"hongliu9527/common/infra/common"
+
+	"github.com/hongliu9527/common/infra/common"
 )
 
 // Conn 获取数据库查询句柄

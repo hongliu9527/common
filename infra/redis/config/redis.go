@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-10-18 16:13:44
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-18 16:19:39
+ * @LastEditTime: 2022-10-20 14:54:07
  * @FilePath: \common\infra\redis\config\redis.go
  * @Description:redis基础设施配置定义
  *
@@ -16,8 +16,8 @@ import (
 	"sync"
 	"time"
 
-	"hongliu9527/common/infra/base"
-	"hongliu9527/common/infra/common"
+	"github.com/hongliu9527/common/infra/base"
+	"github.com/hongliu9527/common/infra/common"
 
 	"github.com/pkg/errors"
 )
