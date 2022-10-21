@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 10:37:45
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-20 14:52:44
+ * @LastEditTime: 2022-10-21 16:55:12
  * @FilePath: \common\infra\config_source\local\local.go
  * @Description:Local配置数据源定义
  *
@@ -29,27 +29,27 @@ const LOCAL = "local"
 // LocalConfigSource 数据源配置定义
 type LocalConfigSource struct {
 	moduleName              string             // 模块名称
-	filePath                string             // 文件路径
+	basePath                string             // 文件路径
 	lastFileChangeTimestamp uint32             // 文件上次修改事件
 	ctx                     context.Context    // 上下文对象
 	cancel                  context.CancelFunc // 退出回调函数
 }
 
 // New 新建本地数据源
-func New(moduleName, filePath string) *LocalConfigSource {
+func New(moduleName, basePath string) *LocalConfigSource {
 	return &LocalConfigSource{
 		moduleName: moduleName,
-		filePath:   filePath,
+		basePath:   basePath,
 	}
 }
 
-// Init 初始化Apollo数据配置源
+// Init 初始化配置文件数据配置源
 func (l *LocalConfigSource) Init(ctx context.Context) error {
 	l.ctx, l.cancel = context.WithCancel(ctx)
 
-	fileInfo, err := os.Stat(l.filePath)
+	fileInfo, err := os.Stat(l.basePath)
 	if err != nil {
-		return fmt.Errorf("获取模块(%s)的配置文件(%s)的信息失败(%s)", l.moduleName, l.filePath, err.Error())
+		return fmt.Errorf("获取模块(%s)的配置文件路径(%s)的信息失败(%s)", l.moduleName, l.basePath, err.Error())
 	}
 
 	l.lastFileChangeTimestamp = uint32(fileInfo.ModTime().Unix())
@@ -59,10 +59,11 @@ func (l *LocalConfigSource) Init(ctx context.Context) error {
 // Read 读取指定配置文件的配置数据
 func (l *LocalConfigSource) Read(filename string, value interface{}, timeout time.Duration) error {
 	viperInstance := viper.New()
-	viper.SetConfigFile(l.filePath)
+	configFileName := l.basePath + filename
+	viper.SetConfigFile(configFileName)
 
 	if err := viperInstance.ReadInConfig(); err != nil {
-		return fmt.Errorf("读取模块(%s)的配置文件(%s)失败(%s)", l.moduleName, l.filePath, err.Error())
+		return fmt.Errorf("读取模块(%s)的配置文件(%s)失败(%s)", l.moduleName, configFileName, err.Error())
 	}
 
 	// 反序列化配置信息
@@ -80,9 +81,10 @@ func (l *LocalConfigSource) Listen(filename string, value interface{}, timeout t
 	timeoutCtx, timeoutCancel := context.WithTimeout(l.ctx, timeout)
 	defer timeoutCancel()
 
-	fileInfo, err := os.Stat(l.filePath)
+	configFileName := l.basePath + filename
+	fileInfo, err := os.Stat(configFileName)
 	if err != nil {
-		return fmt.Errorf("获取模块(%s)的配置文件(%s)的信息失败(%s),请及时处理", l.moduleName, l.filePath, err.Error())
+		return fmt.Errorf("获取模块(%s)的配置文件(%s)的信息失败(%s),请及时处理", l.moduleName, configFileName, err.Error())
 	}
 	currentModTimestamp := uint32(fileInfo.ModTime().Unix())
 
