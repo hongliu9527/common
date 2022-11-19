@@ -2,7 +2,7 @@
  * @Author: hongliu
  * @Date: 2022-09-21 15:46:30
  * @LastEditors: hongliu
- * @LastEditTime: 2022-10-19 14:00:18
+ * @LastEditTime: 2022-11-19 15:57:34
  * @FilePath: \common\infra\common\infra.go
  * @Description:基础设施接口定义
  *
@@ -35,5 +35,11 @@ type OssInfra interface {
 // RedisInfra redis基础设施接口定义
 type RedisInfra interface {
 	Redis
+	Infra
+}
+
+// JobInfra job基础设施接口定义
+type JobInfra interface {
+	Job
 	Infra
 }
